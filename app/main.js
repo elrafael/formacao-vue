@@ -7,11 +7,12 @@ createApp({
   data() {
     return {
       submissions: Seed.submissions,
+      descendent: true,
     }
   },
   computed: {
     sortedSubmissions() {
-      return this.submissions.sort((a, b) => b.votes - a.votes);
+      return this.submissions.sort((a, b) => this.descendent ? b.votes - a.votes : a.votes - b.votes);
     }
   },
   components: {
@@ -19,7 +20,7 @@ createApp({
   },
   methods: {
     changeOrder() {
-      return this.submissions.sort((a, b) => a.votes - b.votes)
+      this.descendent = !this.descendent
     }
   }
 }).mount('#app');

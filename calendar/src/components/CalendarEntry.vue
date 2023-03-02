@@ -1,16 +1,37 @@
 <template>
   <div id="calendar-entry">
     <div class="calendar-entry-note">
-      <input type="text" placeholder="New Event" />
-      <p class="calendar-entry-day">Day of event: <span class="bold">Monday</span></p>
-      <a class="button is-primary is-small is-outlined">Submit</a>
+      <input type="text" placeholder="New Event" required v-model="inputEntry" />
+      <p class="calendar-entry-day">Day of event: <span class="bold">{{titleOfActiveDay.abbvTitle}}</span></p>
+      <a class="button is-primary is-small is-outlined" @click="submitEvent(inputEntry)">Submit</a>
     </div>
+    <p class="error" v-if="error">You must type something</p>
   </div>
 </template>
 
 <script>
+import { store } from "../store";
+console.log(store)
 export default {
-  name: 'CalendarEntry'
+  name: 'CalendarEntry',
+  data() {
+    	return {
+        inputEntry: '',
+        error: false
+      }
+  },
+  computed: {
+    titleOfActiveDay() {
+      return store.getActiveDay();
+    }
+  },
+  methods: {
+    submitEvent(details) {
+      store.submitEvent(details)
+      console.log("🚀 ~ file: CalendarEntry.vue:31 ~ submitEvent ~ details:", details)
+      this.inputEntry = ''
+    }
+  }
 }
 </script>
 
@@ -22,6 +43,10 @@ export default {
   max-width: 300px;
   margin: 0 auto;
   padding: 20px;
+
+  p.error {
+    color: tomato
+  }
 
   .calendar-entry-note {
     input {

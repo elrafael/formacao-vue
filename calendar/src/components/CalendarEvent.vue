@@ -1,79 +1,64 @@
 <template>
-  <div id="calendar-event">
-    <div class="day-event" style="background-color: rgb(153, 255, 153)">
-      <div>
-        <span class="has-text-centered details">{{event.details}}</span> 
-        <div class="has-text-centered icons"><i class="fa fa-pencil-square edit-icon"></i> 
-          <i class="fa fa-trash-o delete-icon"></i>
+    <div class="day-event" :style="getEventBackgroundColor">
+      
+      <div v-if="!event.edit">
+        <span class="has-text-centered details"> {{ event.details }}</span> 
+        <div class="has-text-centered icons">
+          <i class="fa fa-pencil-square edit-icon" @click="editEvent(day.id, event.details)"></i> 
+          <i class="fa fa-trash-o delete-icon" @click="deleteEvent(day.id, event.details)"></i>
         </div>
       </div>
+
+      <div v-if="event.edit">
+        <input type="text" :placeholder="event.details" v-model="newEventDetails"/>
+        <div class="has-text-centered icons">
+          <i class="fa fa-check" @click="updateEvent(day.id, event.details, newEventDetails)"></i>
+        </div>
+      </div>
+
     </div>
-  </div>
-</template>
+  </template>
+  
+  <script>
+import { store } from '../store';
 
-<script>
-export default {
-  name: 'CalendarEvent',
-  props: [
-    'event'
-  ],
-}
-</script>
+  export default {
+    name: 'CalendarEvent',
+    props:['day', 'event'],
+    data(){
+      return {
+        newEventDetails: '',
+      }
+    },
+    computed:{
+      getEventBackgroundColor() {
+        const colors = ['#FF9999', '#85D6FF', '#99FF99'];
+        let randomColor = colors[Math.floor(Math.random() * colors.length)];
+        return `background-color: ${randomColor}`;
+      }
+    },
+    methods: {
+      editEvent(dayId, eventDetails){
+        store.editEvent(dayId, eventDetails)
+      },
+      updateEvent(dayId, originalEventDetails, updateEventDetails){
+        if (updateEventDetails === ''){
+          originalEventDetails = updateEventDetails;
+        }
 
-<style lang="scss" scoped>
-#calendar-event {
-  .day-event {
-    margin-top: 6px;
-    margin-bottom: 6px;
-    display: block;
-    color: #4C4C4C;
-    padding: 5px;
-
-    .details {
-      display: block;
-    }
-
-    .icons .fa {
-      padding: 0 2px;
-    }
-
-    input {
-      background: none;
-      border: 0;
-      border-bottom: 1px solid #FFF;
-      width: 100%;
-
-      &:focus {
-        outline: none;
+        store.updateEvent(dayId, originalEventDetails, updateEventDetails);
+        this.newEventDetails = '';
+      }, 
+      deleteEvent(dayId, eventDetails){
+        store.deleteEvent(dayId, eventDetails);
       }
     }
   }
-  .day {
-    background-color: #4A4A4A;
-    color: #FFF;
-    border-left: 1px solid #8F8F8F;
-    border-bottom: 1px solid #8F8F8F;
-    font-size: 12px;
-    cursor: pointer;
-
-    &:hover {
-      background: darken(#4A4A4A,3%);
-    }
-
-    .day-banner {
-      background-color: #333333;
-      color: #FFF;
-      padding: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .day-details {
-      padding: 10px;
-
-      .day-event {
+  </script>
+  
+  <style lang="scss" scoped>
+  
+  .day-event {
         margin-top: 6px;
         margin-bottom: 6px;
         display: block;
@@ -99,11 +84,4 @@ export default {
           }
         }
       }
-    }
-
-    &:last-child {
-      border-right: 1px solid #8F8F8F;
-    }
-  }
-}
-</style>
+  </style>

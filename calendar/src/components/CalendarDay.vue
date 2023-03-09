@@ -1,34 +1,38 @@
 <template>
-  <div id="calendar-day">
-    <div class="day column">
-      <div class="day-banner has-text-white has-text-centered">{{day.abbvTitle}}</div>
-        <div class="day-details">
-          <div class="day-number">{{day.id}}</div>
-          <CalendarEvent v-for="(item, index) in day.events" :key="index" :event="item" />
+     <div class="day column" @click="setActiveDay(day.id)">
+          <div class="day-banner has-text-white has-text-centered">{{day.abbvTitle}}</div>
+          <div class="day-details">
+            <div class="day-number">{{ day.id }}</div>
+            <CalendarEvent 
+              v-for="(event, index) in day.events" 
+              :key="index"
+              :event="event"
+              :day="day"
+            />
+          </div>
         </div>
-      </div>
-  </div>
-</template>
+  </template>
+  
+  <script>
+  import { store } from '../store';
+  import CalendarEvent from './CalendarEvent.vue'
 
-<script>
-import CalendarEvent from "./CalendarEvent.vue";
-export default {
-  name: 'CalendarDay',
-  props: [
-    'day'
-  ],
-  components: {
-    CalendarEvent,
+  export default {
+    name: 'CalendarDay', 
+    props: ['day'], 
+    components: {
+      CalendarEvent,
+    },
+    methods: {
+      setActiveDay(dayId){
+        store.setActiveDay(dayId);
+      }
+    }
   }
-}
-</script>
-
-<style lang="scss" scoped>
-#calendar-day {
-  .column {
-    padding: 0 0 0 0;
-  }
-  .day {
+  </script>
+  
+  <style lang="scss" scoped>
+   .day {
     background-color: #4A4A4A;
     color: #FFF;
     border-left: 1px solid #8F8F8F;
@@ -53,38 +57,10 @@ export default {
     .day-details {
       padding: 10px;
 
-      .day-event {
-        margin-top: 6px;
-        margin-bottom: 6px;
-        display: block;
-        color: #4C4C4C;
-        padding: 5px;
-
-        .details {
-          display: block;
-        }
-
-        .icons .fa {
-          padding: 0 2px;
-        }
-
-        input {
-          background: none;
-          border: 0;
-          border-bottom: 1px solid #FFF;
-          width: 100%;
-
-          &:focus {
-            outline: none;
-          }
-        }
-      }
     }
 
     &:last-child {
       border-right: 1px solid #8F8F8F;
     }
   }
-  
-}
-</style>
+  </style>

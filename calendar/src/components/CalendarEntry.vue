@@ -1,41 +1,52 @@
 <template>
-  <div id="calendar-entry">
-    <div class="calendar-entry-note">
-      <input type="text" placeholder="New Event" required v-model="inputEntry" />
-      <p class="calendar-entry-day">Day of event: <span class="bold">{{titleOfActiveDay.abbvTitle}}</span></p>
-      <a class="button is-primary is-small is-outlined" @click="submitEvent(inputEntry)">Submit</a>
-    </div>
-    <p class="error" v-if="error">You must type something</p>
-  </div>
-</template>
+    <div id="calendar-entry">
+      <div class="calendar-entry-note">
 
-<script>
-import { store } from "../store";
-console.log(store)
-export default {
-  name: 'CalendarEntry',
-  data() {
-    	return {
+        <input type="text" 
+               placeholder="New Event" 
+               required 
+               v-model="inputEntry"
+        />
+
+        <p class="calendar-entry-day">Day of event: <span class="bold">{{ titleOfActiveDay }}</span></p>
+        <a class="button is-primary is-small is-outlined" @click="submitEvent(inputEntry)">
+          Submit
+        </a>
+      </div>
+      <p class="error" v-show="error"> You must type something</p>
+    </div>
+  </template>
+  
+  <script>
+  import { store } from '../store';
+
+  export default {
+    name: 'CalendarEntry',
+    data(){
+      return {
         inputEntry: '',
-        error: false
+        error: false,
       }
-  },
-  computed: {
-    titleOfActiveDay() {
-      return store.getActiveDay();
-    }
-  },
-  methods: {
-    submitEvent(details) {
-      store.submitEvent(details)
-      console.log("🚀 ~ file: CalendarEntry.vue:31 ~ submitEvent ~ details:", details)
-      this.inputEntry = ''
+    },
+    computed: {
+      titleOfActiveDay(){
+        return store.getActiveDay().fullTitle;
+      }
+    },
+    methods:{
+      submitEvent(details){
+        if(details === '') return this.error = true;
+
+        store.submitEvent(details);
+        this.inputEntry = '';
+        this.error = false;
+      }
     }
   }
-}
-</script>
+  </script>
+  
+  <style lang="scss" scoped>
 
-<style lang="scss" scoped>
 #calendar-entry {
   background: #FFF;
   border: 1px solid #42b883;
@@ -44,8 +55,8 @@ export default {
   margin: 0 auto;
   padding: 20px;
 
-  p.error {
-    color: tomato
+  .error{
+    color: tomato;
   }
 
   .calendar-entry-note {
@@ -80,4 +91,4 @@ export default {
     }
   }
 }
-</style>
+  </style>

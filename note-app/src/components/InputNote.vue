@@ -17,10 +17,14 @@
     emits: ['add-note'],
     methods: {
       monitorEnterKey() {
-        this.$emit('add-note', {
+        this.emitter.emit('add-note', {
           note: this.value,
           timestamp: new Date().toLocaleDateString()
-        });
+        })
+        // this.$emit('add-note', {
+        //   note: this.value,
+        //   timestamp: new Date().toLocaleDateString()
+        // });
         this.value = ''
       }
     }

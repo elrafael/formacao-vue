@@ -1,0 +1,19 @@
+Exercicio Biblioteca Livros
+
+1 - criar uma biblioteca de livros, com Vuejs, VueX e routing, de acordo, com os snapshots, apresentados.
+
+Funcionalidades:
+1 - ter uma home page inicial
+2 - ter uma pagina "About", com o vosso nome 
+3 - ter um "dashboard, onde vai ser apresentado uma lista de livros de acordo com o json distribuido (using a biblioteca json-server, para criar uma API "on-the-fly")
+para instalar: npm install -g json-server
+para correr o servidor localmente e diponibilizar uma API: json-server --watch  src/data.json --port 3001
+4 - Criar um link no titulo para mostrar os detalhes do livro.
+5 - poder filtar os livros de acordo com a propriedade "alreadyRead"
+6 - poder eliminar, acrescentar , editar(se tiverem tempo) um livro.
+
+
+Done :-) 
+
+Têm uma versão simplificada em:
+http://joaogoncalves.net/my-products/ so com a parte de mostrar os detalhes do produto

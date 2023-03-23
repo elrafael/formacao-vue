@@ -1,0 +1,21 @@
+{
+  "name": "listings",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "npm-run-all --parallel mock dev",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "mock": "json-server --watch src/data.json"
+  },
+  "dependencies": {
+    "vue": "^3.2.47",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.1.0",
+    "vite": "^4.2.0"
+  }
+}
